@@ -6,6 +6,7 @@ Visualization for Bayesian Inference Results
 import json
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib.patches import Patch
 
 # 设置中文字体
 plt.rcParams['font.sans-serif'] = ['DejaVu Sans', 'Arial Unicode MS', 'SimHei']
@@ -14,8 +15,13 @@ plt.rcParams['axes.unicode_minus'] = False
 
 def load_results(filepath='bayesian_results.json'):
     """加载结果文件"""
-    with open(filepath, 'r', encoding='utf-8') as f:
-        return json.load(f)
+    try:
+        with open(filepath, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except FileNotFoundError:
+        raise FileNotFoundError(f"Results file '{filepath}' not found. Please run 'simple_bayesian_demo.py' first to generate results.")
+    except json.JSONDecodeError as e:
+        raise json.JSONDecodeError(f"Failed to parse JSON from '{filepath}': {str(e)}", e.doc, e.pos)
 
 
 def plot_feature_coefficients(results):
@@ -37,14 +43,13 @@ def plot_feature_coefficients(results):
     
     ax.set_yticks(range(len(names_sorted)))
     ax.set_yticklabels(names_sorted)
-    ax.set_xlabel('Coefficient Value (System Shuzhi)', fontsize=12)
+    ax.set_xlabel('Coefficient Value', fontsize=12)
     ax.set_title('Feature Coefficients for Survival Prediction\n(Shengcun Yuce Tezheng Xishu)', 
                  fontsize=14, fontweight='bold')
     ax.axvline(x=0, color='black', linestyle='-', linewidth=0.5)
     ax.grid(axis='x', alpha=0.3)
     
     # 添加图例
-    from matplotlib.patches import Patch
     legend_elements = [
         Patch(facecolor='green', alpha=0.7, label='Increase Survival (Zengjia Shengcun)'),
         Patch(facecolor='red', alpha=0.7, label='Decrease Survival (Jiangdi Shengcun)')

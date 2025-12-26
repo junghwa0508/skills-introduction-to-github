@@ -54,20 +54,24 @@ class SimpleBayesianPredictor:
         
         df = pd.DataFrame(data)
         
-        # 根据特征调整生存概率
-        for i in range(n_samples):
-            prob = 0.3
-            if df.loc[i, 'Sex'] == 'female':
-                prob += 0.35
-            if df.loc[i, 'Pclass'] == 1:
-                prob += 0.25
-            elif df.loc[i, 'Pclass'] == 3:
-                prob -= 0.25
-            if df.loc[i, 'Age'] < 10:
-                prob += 0.2
-            
-            prob = np.clip(prob, 0.05, 0.95)
-            df.loc[i, 'Survived'] = np.random.binomial(1, prob)
+        # 根据特征调整生存概率，使其更真实 - 使用向量化操作
+        prob = np.full(n_samples, 0.3)
+        
+        # 女性增加生存概率
+        prob[df['Sex'] == 'female'] += 0.35
+        
+        # 一等舱增加，三等舱减少生存概率
+        prob[df['Pclass'] == 1] += 0.25
+        prob[df['Pclass'] == 3] -= 0.25
+        
+        # 儿童增加生存概率
+        prob[df['Age'] < 10] += 0.2
+        
+        # 限制概率范围
+        prob = np.clip(prob, 0.05, 0.95)
+        
+        # 生成生存结果
+        df['Survived'] = np.random.binomial(1, prob)
         
         return df
     
