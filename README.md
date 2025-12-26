@@ -11,6 +11,37 @@
 
 _Get started using GitHub in less than an hour._
 
+---
+
+## 🚢 New Feature: Bayesian Survival Prediction
+
+This repository now includes a comprehensive **Bayesian Inference implementation** for predicting Titanic passenger survival probability!
+
+### Quick Start:
+```bash
+# Install dependencies
+pip install numpy pandas scipy scikit-learn matplotlib
+
+# Run the demo
+python simple_bayesian_demo.py
+
+# Visualize results
+python visualize_results.py
+```
+
+### Documentation:
+- 📘 [Technical Documentation](BAYESIAN_PREDICTION_README.md)
+- 📖 [Usage Guide](USAGE_GUIDE.md)
+- 📊 [Project Summary](PROJECT_SUMMARY.md)
+
+### Features:
+- ✅ Bayesian logistic regression with uncertainty quantification
+- ✅ Feature importance analysis (age, gender, cabin class, etc.)
+- ✅ Comprehensive visualizations
+- ✅ Both simplified (fast) and full (accurate) implementations
+
+---
+
 </header>
 
 <!--
